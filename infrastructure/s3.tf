@@ -11,10 +11,10 @@ resource "aws_s3_bucket" "state_file" {
 
 #Versioning for State Bucket
 
-resource "aws_s3_versioning" "state_file" {
+resource "aws_s3_bucket_versioning" "state_file" {
   bucket = var.s3_bucket_name
 
-  versioning_configuration = {
+  versioning_configuration  {
     status = "Enabeled"
   }
 }

@@ -17,3 +17,7 @@ terraform {
     dynamodb_table = "dev-tfstate-db"
   }
 }
+
+provider "aws" {
+  region = "us-east-1"
+}

@@ -22,11 +22,11 @@ resource "aws_iam_role" "lambda_function_role" {
 
     assume_role_policy = jsonencode({
         Version = "2012-10-17"
-        statement = [
+        Statement = [
             {
-                Action = "sts:AssumeRole"
-                Effect = "Allow"
-                Sid = ""
+                Action = "sts:AssumeRole",
+                Effect = "Allow",
+                Sid = "",
                 Principal = {
                     Service = "lambda.amazonaws.com"
                 }
@@ -35,7 +35,7 @@ resource "aws_iam_role" "lambda_function_role" {
     })
 
     tags = {
-        tag-key = "almbda-role"
+        "role-tag" = "lambda-role"
     }
 }
 
@@ -52,7 +52,7 @@ resource "aws_iam_role_policy" "lambda_role_sqs_policy"{
                     "sqs:ChangeMessageVisibility",
                     "sqs:DeleteMessage",
                     "sqs:GetQueueAttributes",
-                    "sqs:ReceiveMesasage"
+                    "sqs:ReceiveMessage"
                 ]
                 Effect = "Allow"
                 Resource = "*"
@@ -62,7 +62,7 @@ resource "aws_iam_role_policy" "lambda_role_sqs_policy"{
 }
 
 #Allows for logging to CloudWatch
-resource "aws_iam_role_policy" "lanbda_role_log_policy"{
+resource "aws_iam_role_policy" "lambda_role_log_policy"{
     name = "AllowLambdaLogs"
     role = aws_iam_role.lambda_function_role.id
 

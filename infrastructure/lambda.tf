@@ -44,7 +44,7 @@ resource "aws_iam_role_policy" "lambda_role_sqs_policy"{
     name = "AllowSqsLambda"
     role = aws_iam_role.lambda_function_role.id
 
-    policy = jsondecode({
+    policy = jsonencode({
         Version = "2012-10-17"
         Statement = [
             {

@@ -26,7 +26,11 @@ jobs:
             terraform_version: 1.0.1
             terraform_wrapper: false
 
+      - name: Terraform Init
+        id: init
+        run: terraform init
 
+        
       - name: Terraform Destroy
         id: destroy
         if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/main')

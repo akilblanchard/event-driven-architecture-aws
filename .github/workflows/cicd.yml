@@ -29,31 +29,34 @@ jobs:
             terraform_version: 1.0.1
             terraform_wrapper: false
 
+        #Creates     
+      - name: Create Backend.tfvars file
+        run: echo "$BACKEND_TFVARS" > backend.tfvars
 
       - name: Terraform Init
         id: init
-        run: terraform init
+        run: terraform init -backend-config=backend.tfvars
 
       - name: Terraform Refresh
         id: refresh
-        run: terraform refresh
+        run: terraform refresh -var-file=backend.tfvars
 
       - name: Terraform Format
         id: fmt
-        run: terraform fmt      
+        run: terraform fmt  -var-file=backend.tfvars
 
       - name: Terraform Validate
-        run: terraform validate
+        run: terraform validate -var-file=backend.tfvars
 
       - name: Terraform Plan
         id: plan
-        run: terraform plan -out=tfplan
+        run: terraform plan -var-file=backend.tfvars -out=tfplan
       
       - name: Terraform Apply
         id: apply
         run: |
           if [ "${{github.event_name}}" == "push" ] && [ "${{github.ref}}" == "refs/heads/main" ]; then 
-          terraform apply tfplan || exit 1
+          terraform apply -var-file=backend.tfvars tfplan || exit 1
           else
             echo "Skipping Terraform apply."
           fi

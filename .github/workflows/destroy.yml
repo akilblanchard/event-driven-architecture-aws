@@ -26,6 +26,14 @@ jobs:
             terraform_version: 1.0.1
             terraform_wrapper: false
 
+
+
+      #Creates backend
+      - name: Create Backend.tfvars file
+        run: echo "${{ secrets.BACKEND_TFVARS }}" > backend.tfvars
+      
+
+      #Terraform commands
       - name: Terraform Init
         id: init
         run: terraform init -backend-config=backend.tfvars

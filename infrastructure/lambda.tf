@@ -1,20 +1,21 @@
 #Creates Lambda resource
 resource "aws_lambda_function" "lambda_results"{
-    function_name = "sqs_message_check"
-    filename = "${path.module}/../lambda/lambda.zip"
-    role = "${aws_iam_role.lambda_function_role.arn}"
-    handler = "lambda.handler"
+    function_name = var.function_name
+    filename = var.lambda_filename
+    role = aws_iam_role.lambda_function_role.arn
+    handler = var.lambda_handler
     source_code_hash = "${data.archive_file.lambda_zip.output_base64sha256}"
-    runtime = "python3.8"
+    runtime = var.lambda_runtime
 }
 
 #Adds SQS as a trigger for the Lambda Function
 resource "aws_lambda_event_source_mapping" "sqs_trigger"{
     event_source_arn = aws_sqs_queue.order_process.arn
     function_name = aws_lambda_function.lambda_results.function_name
-    batch_size = 2
+    batch_size = var.batch_size
     depends_on = [ aws_sqs_queue.order_process ]
 }
+
 
 #Policy for Lambda to take on role of an AWS Lambda
 resource "aws_iam_role" "lambda_function_role" {
@@ -39,6 +40,7 @@ resource "aws_iam_role" "lambda_function_role" {
     }
 }
 
+
 #Policy allowing Lambda to get messages from sqs queue
 resource "aws_iam_role_policy" "lambda_role_sqs_policy"{
     name = "AllowSqsLambda"
@@ -60,6 +62,7 @@ resource "aws_iam_role_policy" "lambda_role_sqs_policy"{
         ]
     })
 }
+
 
 #Allows for logging to CloudWatch
 resource "aws_iam_role_policy" "lambda_role_log_policy"{

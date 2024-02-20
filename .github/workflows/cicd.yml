@@ -29,35 +29,34 @@ jobs:
             terraform_version: 1.0.1
             terraform_wrapper: false
 
-        #Creates backend
-      - name: Create Backend.tfvars file
-        run: echo "${{ secrets.BACKEND_TFVARS }}" > backend.tfvars
-        
-        #Terraform commands
-      - name: Terraform Init
-        id: init
-        run: terraform init -backend-config=backend.tfvars
 
+        #Terraform commands
+      - name: Initialize Terraform
+        run: |
+          terraform init -backend-config="bucket=${{ secrets.TF_BACKEND_BUCKET }}" \
+                         -backend-config="key=${{ secrets.TF_BACKEND_KEY }}" \
+                         -backend-config="region=${{ secrets.TF_BACKEND_REGION }}" \
+                         -backend-config="dynamodb_table=${{ secrets.TF_BACKEND_DYNAMODB_TABLE }}"
       - name: Terraform Refresh
         id: refresh
-        run: terraform refresh -var-file=backend.tfvars
+        run: terraform refresh
 
       - name: Terraform Format
         id: fmt
-        run: terraform fmt  -var-file=backend.tfvars
+        run: terraform fmt
 
       - name: Terraform Validate
-        run: terraform validate -var-file=backend.tfvars
+        run: terraform validate
 
       - name: Terraform Plan
         id: plan
-        run: terraform plan -var-file=backend.tfvars -out=tfplan
+        run: terraform plan
       
       - name: Terraform Apply
         id: apply
         run: |
           if [ "${{github.event_name}}" == "push" ] && [ "${{github.ref}}" == "refs/heads/main" ]; then 
-          terraform apply -var-file=backend.tfvars tfplan || exit 1
+          terraform apply tfplan || exit 1
           else
             echo "Skipping Terraform apply."
           fi

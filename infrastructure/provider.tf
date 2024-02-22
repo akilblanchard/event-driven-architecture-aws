@@ -9,6 +9,12 @@ terraform {
     }
   }
 
+  backend "s3" {
+    bucket = "767dev-tfstate-s3"
+    key = "terraform.tfstate"
+    region = "us-east-1"
+    dynamodb_table = "dev-tfstate-db"
+  }
 }
 
 provider "aws" {
@@ -17,7 +23,6 @@ provider "aws" {
 
 module "remote_state" {
   source      = "../modules/remote_state"
-  region = "us-east-1"
   bucket_name = "767dev-tfstate-s3"
   database_table = "dev-tfstate-db"
   sse_algorithm = "aws:kms"

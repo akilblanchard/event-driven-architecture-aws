@@ -9,7 +9,7 @@ resource "aws_s3_bucket" "state_file" {
 
   force_destroy = true
   tags = {
-    Nmae = var.s3_bucket_tag
+    Nmae = "s3-Remote-State"
   }
 }
 
@@ -33,7 +33,7 @@ resource "aws_s3_bucket_public_access_block" "state" {
 #Enable Server-Side encrytpion 
 resource "aws_kms_key" "state" {
   description             = "S3 Bucket encrytpion key"
-  deletion_window_in_days = var.deletion_period
+  deletion_window_in_days = 30
 }
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "state" {
@@ -41,7 +41,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "state" {
   rule {
     apply_server_side_encryption_by_default {
       kms_master_key_id =  aws_kms_key.state.arn
-      sse_algorithm     = var.sse_algorithm
+      sse_algorithm     = "aws:kms"
     }
   }
 }

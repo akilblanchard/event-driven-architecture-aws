@@ -5,7 +5,7 @@
 #Bucket to hold Terraform State File
 resource "aws_s3_bucket" "state_file" {
   bucket = var.bucket_name
-  region = var.region
+
 
   force_destroy = true
   tags = {

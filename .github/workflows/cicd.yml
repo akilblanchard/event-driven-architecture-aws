@@ -30,24 +30,24 @@ jobs:
             terraform_wrapper: false
 
 
-      - name: Terraform Init
-        id: init
+        #Terraform commands
+      - name: Initialize Terraform
         run: terraform init
-
+          
       - name: Terraform Refresh
         id: refresh
         run: terraform refresh
 
       - name: Terraform Format
         id: fmt
-        run: terraform fmt      
+        run: terraform fmt
 
       - name: Terraform Validate
         run: terraform validate
 
       - name: Terraform Plan
         id: plan
-        run: terraform plan -out=tfplan
+        run: terraform plan
       
       - name: Terraform Apply
         id: apply

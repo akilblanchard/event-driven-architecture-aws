@@ -20,11 +20,6 @@ variable "deletion_period"{
   default = 15
 }
 
-variable "region"{
-    description = "Default Region for s3 bucket"
-    type = string
-}
-
 
 #------------------
 #DynamoDB Variables

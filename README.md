@@ -21,5 +21,3 @@ An event-driven architecture that  uses events to trigger and communicate betwee
 
    - The below is a screenshot from the AWS GUI wherein CloudWatch Logs shows Lambda receiving a message from the SQS queue
 <img width="1252" alt="Screenshot 2024-02-11 at 4 27 04 PM" src="https://github.com/akilblanchard/event-driven-architecture-aws/assets/108893749/9c03efed-db58-4224-bc38-168aacd15f66">
-
-- **Utilize tfvars as opposed to hard coding values**
